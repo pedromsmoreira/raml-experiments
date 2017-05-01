@@ -1,0 +1,102 @@
+#%RAML 1.0
+title: e-BookMobile API
+version: v1
+baseUri: http://api.e-bookmobile.com/{version}
+types:
+  TestType:
+    type: object
+    properties:
+      id: number
+      optional?: string
+      expanded:
+        type: object
+        properties:
+          count: number
+/users:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message" : "Hello World"
+              }
+/authors:
+  /{authorName}:
+/books:
+  get:
+    queryParameters:
+      author:
+      publicationYear:
+      rating:
+      isbn:
+  post:
+  put:
+  /{bookTitle}:
+    description: Return book with the wanted title
+    get:
+      description: Get the book by title
+      queryParameters:
+        author:
+          displayName: Author
+          type: string
+          description: An author's full name
+          example: Mary Roach
+          required: false
+        publicationYear:
+          displayName: Pub Year
+          type: number
+          description: The year released for the first time in the US
+          example: 1984
+          required: false
+        rating:
+          displayName: Rating
+          type: number
+          description: Average rating (1-5) submitted by users
+          required: false
+        isbn:
+          displayName: ISBN
+          type: string
+          minLength: 10
+          example: 0321726070?
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                   "data": {
+                     "id": "SbBGk",
+                     "title": "Stiff: The Curious Lives of Human Cadavers",
+                     "description": null,
+                     "datetime": 1341533193,
+                     "genre": "science",
+                     "author": "Mary Roach",
+                     "link": "http://e-bookmobile.com/books/Stiff",
+                   },
+                   "success": true,
+                   "status": 200
+                 }
+        404:
+          body:
+            application/json:
+              example: |
+                { "message": "Book not found"}
+        500:
+          body:
+            application/json:
+              example: |
+                { "message": "Internal Server error." }
+    put:
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+    /{author}:
+      get:
+    /{publisher}:
+      get:
